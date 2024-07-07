@@ -496,55 +496,89 @@
     ?>
 
 <style>
-     .pagination-outer{ text-align: center; }
-     .pagination{
-          margin-top: 50px;
-     font-family: 'Poppins', sans-serif;
-     display: inline-flex;
-     position: relative;
+     .pagination-outer {
+          text-align: center;
      }
-     .pagination li a.page-link{
-     color: #fff;
-     background-color: #ff3838;
-     font-size: 18px;
-     font-weight: 600;
-     line-height: 35px;
-     height: 35px;
-     width: 42px;
-     padding: 0;
-     margin: 0 5px;
-     border: none;
-     border-radius: 20px 0;
-     position: relative;
-     z-index: 1;
-     transition: all 0.4s ease 0s;
+
+     .pagination {
+          font-family: 'Poppins', sans-serif;
+          display: inline-flex;
+          position: relative;
      }
+
+     .pagination li a.page-link {
+          color: #42372c;
+          background: transparent;
+          font-size: 18px;
+          font-weight: 500;
+          text-align: center;
+          line-height: 31px;
+          height: 33px;
+          width: 33px;
+          padding: 0;
+          margin: 0 4px;
+          border: 1px solid #555;
+          border-radius: 0;
+          display: block;
+          position: relative;
+          z-index: 0;
+          transition: all 0.1s ease 0s;
+     }
+
      .pagination li:first-child a.page-link,
-     .pagination li:last-child a.page-link{
-     font-size: 30px;
-     line-height: 35px;
-     font-weight: 400;
-     border: none;
+     .pagination li:last-child a.page-link {
+          font-size: 30px;
+          line-height: 30px;
      }
+
      .pagination li a.page-link:hover,
      .pagination li a.page-link:focus,
      .pagination li.active a.page-link:hover,
-     .pagination li.active a.page-link{
-     color: #fff;
-     background-color: #990e0e;
-     box-shadow: 3px 3px rgba(0,0,0,0.2);
-     transform: scale(1.15);
+     .pagination li.active a.page-link {
+          color: #870079;
+          background: transparent;
+          border-color: #870079;
      }
-     @media only screen and (max-width: 480px){
-     .pagination{
-          font-size: 0;
-          display: inline-block;
+
+     .pagination li a.page-link:before {
+          content: '';
+          background-color: #870079;
+          height: 30%;
+          width: 50%;
+          opacity: 0;
+          transform: translateX(-50%);
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          z-index: -1;
+          transition: all 0.3s ease 0s;
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
      }
-     .pagination li{
-          display: inline-block;
-          vertical-align: top;
-          margin: 10px 0;
+
+     .pagination li:first-child a.page-link:before,
+     .pagination li:last-child a.page-link:before {
+          display: none;
      }
+
+     .pagination li a.page-link:hover:before,
+     .pagination li a.page-link:focus:before,
+     .pagination li.active a.page-link:hover:before,
+     .pagination li.active a.page-link:before {
+          opacity: 1;
+          bottom: 100%;
+     }
+
+     @media only screen and (max-width: 480px) {
+          .pagination {
+               font-size: 0;
+               display: inline-block;
+          }
+
+          .pagination li {
+               display: inline-block;
+               vertical-align: top;
+               margin: 0 0 15px;
+          }
      }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

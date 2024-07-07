@@ -8,7 +8,7 @@ $response = file_get_contents($url);
 $data = json_decode($response, true);
 
 $episodeCount = count($data['episodes'][0]['server_data']);
-
+echo $data['movie']['trailer_url'];
 // echo '<pre>';
 // print_r($data);
 // echo '</pre>';
@@ -116,7 +116,7 @@ $episodeCount = count($data['episodes'][0]['server_data']);
      <div class="trailer-title">
           <h3>official trailer</h3>
      </div>
-     <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/1VIZ89FEjYI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+     <iframe width="560" height="315" src="<?php echo $data['movie']['trailer_url']?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </section>
 
 <!-- <section class="international-trailer margin">
