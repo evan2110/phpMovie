@@ -81,16 +81,10 @@ $episodeCount = count($data['episodes'][0]['server_data']);
                     <h3 style="margin-top: 5%;">screen shot</h3>
                     <div class="movie-casts">
                          <div class="movie-cast-item">
-                              <img src="./assets/img/Movie-Data/Pirates-of-the-Caribbean-Salazar's-Revenge/screenshot-1.jpg" alt="cast1">
+                              <img src="<?php echo $data['movie']['thumb_url']; ?>" alt="cast1">
                          </div>
                          <div class="movie-cast-item">
-                              <img src="./assets/img/Movie-Data/Pirates-of-the-Caribbean-Salazar's-Revenge/screenshot-2.jpg" alt="cast1">
-                         </div>
-                         <div class="movie-cast-item">
-                              <img src="./assets/img/Movie-Data/Pirates-of-the-Caribbean-Salazar's-Revenge/screenshot-3.jpg" alt="cast1">
-                         </div>
-                         <div class="movie-cast-item">
-                              <img src="./assets/img/Movie-Data/Pirates-of-the-Caribbean-Salazar's-Revenge/screenshot-4.jpg" alt="cast1">
+                              <img src="<?php echo $data['movie']['poster_url']; ?>" alt="cast1">
                          </div>
                     </div>
                </div>
@@ -109,9 +103,8 @@ $episodeCount = count($data['episodes'][0]['server_data']);
           <nav class="pagination-outer" aria-label="Page navigation">
                <ul class="pagination">
                     <?php
-
-                    for ($i = 1; $i <= $episodeCount; $i++) {
-                         echo "<li class='page-item'><a class='page-link' href=''>$i</a></li>";
+                    for ($i = 1; $i <= $episodeCount; $i++) { 
+                         echo "<li class='page-item'><a class='page-link' href='watch.php?slug=" . htmlspecialchars($slug) . "&espi=$i'>$i</a></li>";
                     }
                     ?>
                </ul>
