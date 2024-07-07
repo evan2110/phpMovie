@@ -617,6 +617,7 @@ a.movie-item:hover {
 }
 
 .section-wrapper {
+    
     left: 220px;
     width: calc(100% - 310px);
     position: absolute;
@@ -1260,6 +1261,8 @@ a.movie-item:hover {
 
 
 
+
+			
 
 
 

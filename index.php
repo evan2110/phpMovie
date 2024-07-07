@@ -1,41 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-     <title>Flix | Movie web</title>
-
-     <link rel="shortcut icon" href="./assets/img/Images/logo-foursquare.svg">
-     
-     <!-- CSS -->
-     <link rel="stylesheet" href="./assets/component.css">
-     <link rel="stylesheet" href="./assets/style.css">
-     <link rel="stylesheet" href="./assets/grid.css">
-
-     <!-- GOOGLE FONTS -->
-     <link rel="preconnect" href="https://fonts.gstatic.com">
-     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap" rel="stylesheet">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-          
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Open+Sans:ital,wght@0,400;1,300&family=Playfair+Display:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700&family=Shizuru&display=swap" rel="stylesheet">
-
-     <!-- LINK CAROUSEL -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-
-
-
-     <!-- BOX ICON  -->
-     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-     <link rel="stylesheet" href="./assets/fontawesome-free-5.15.4-web/css/all.min.css">
-     <link rel="stylesheet" href="./themify-icons/themify-icons.css">
-     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</head>
-<body>
+<?php
+    require 'components/header.php';
+    $page = $_GET['page'] ?? 1;
+    $url = 'https://ophim1.com/danh-sach/phim-moi-cap-nhat?page=' . $page;
+    $response = file_get_contents($url);
+    $data = json_decode($response, true);
+    
+    ?>
      <!-- NAV -->
 
           <div class="menu-tablet" id="menu-tablet">
@@ -126,7 +96,7 @@
                     </form>
      
                     <div class="nav-sign">
-                         <a href="#" class="btn btn-hover">
+                         <a href="Login.php" class="btn btn-hover">
                               <span>Sign in</span>
                          </a>
                     
@@ -156,12 +126,12 @@
                               Movies   
                          </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                          <a href="#section-tv">
                               <span class="nav-icon"><ion-icon name="tv-outline"></ion-icon></span>
                               Tv Series  
                          </a>
-                    </li>
+                    </li> -->
 
                     <li class="nav-item">
                          <a href="#">
@@ -406,376 +376,111 @@
                     </div>
                   
                     <div class="movies-slide row">
-                         
-                         <a href="component.php" class="movie-item col-3-5 m-5 s-11 to-top show-on-scroll">
+                    <?php
+                         foreach ($data['items'] as $movie) {
+                         $title = htmlspecialchars($movie['name']);
+                         $origin_name = htmlspecialchars($movie['origin_name']);
+                         $year = htmlspecialchars($movie['year']);
+                         $thumb_url = htmlspecialchars($data['pathImage'] . $movie['thumb_url']);
+                         $poster_url = htmlspecialchars($data['pathImage'] . $movie['poster_url']);
+                         $slug = htmlspecialchars($movie['slug']);
+                         $rating = isset($movie['tmdb']['vote_average']) ? htmlspecialchars($movie['tmdb']['vote_average']) : 'N/A';
+                         $duration = '120 mins'; // Assuming duration is static; replace with actual value if available
+                         $quality = 'FHD'; // Assuming quality is static; replace with actual value if available
+                         ?>
+
+                         <a href="component.php?slug=<?php echo $slug; ?>" class="movie-item col-3-5 m-5 s-11 to-top show-on-scroll">
                               <div>
-                                   <img src="./assets/img/Images/raya1.jpg" alt="">
+                                   <img src="<?php echo $thumb_url; ?>" alt="<?php echo $title; ?>">
                                    <div class="movie-item-content">
                                         <div class="movie-item-title">
-                                             raya and the last dragon
-
+                                             <?php echo $title; ?>
                                         </div>
 
                                         <div class="movies-infors-card">
                                              <div class="movies-infor">
-                                                  <ion-icon name="bookmark-outline"></ion-icon>
-                                                  <span>9.0</span>
+                                             <ion-icon name="bookmark-outline"></ion-icon>
+                                             <span><?php echo $rating; ?></span>
                                              </div>
                                              <div class="movies-infor">
-                                                  <ion-icon name="time-outline"></ion-icon>
-                                                  <span>120 mins</span>
+                                             <ion-icon name="time-outline"></ion-icon>
+                                             <span><?php echo $duration; ?></span>
                                              </div>
                                              <div class="movies-infor">
-                                                  <ion-icon name="cube-outline"></ion-icon>
-                                                  <span>FHD</span>
+                                             <ion-icon name="cube-outline"></ion-icon>
+                                             <span><?php echo $quality; ?></span>
                                              </div>
-                                        </div>    
+                                        </div>
                                    </div>
                               </div>
                               <div class="movie-item-overlay">
                               </div>
-                              <div class="movie-item-act" >
-                                   <!-- <div class="ring"></div> -->
-                                   <i class='bx bxs-right-arrow'></i>
-
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5 m-5 s-11 to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/p-4.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             venon: let there be carnage
-                                        </div>
-
-                                   <div class="movies-infors-card">
-                                        <div class="movies-infor">
-                                             <ion-icon name="bookmark-outline"></ion-icon>
-                                             <span>9.0</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="time-outline"></ion-icon>
-                                             <span>120 mins</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="cube-outline"></ion-icon>
-                                             <span>FHD</span>
-                                        </div>
-                                        
-                                   </div>
-                              </div>
-                                   <div class="movie-item-overlay">
-                              </div>
                               <div class="movie-item-act">
                                    <!-- <div class="ring"></div> -->
                                    <i class='bx bxs-right-arrow'></i>
-                                   
                                    <div>
-                                        <i class='bx bxs-share-alt' ></i>
+                                        <i class='bx bxs-share-alt'></i>
                                         <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
+                                        <i class='bx bx-plus-medical'></i>
                                    </div>
-                              </div>
-                              
                               </div>
                          </a>
 
-                         <a href="#" class="movie-item col-3-5 m-5 s-11  to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/p-5.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             dealpool 2
-                                        </div>
+                         <?php
+                         }
+                         ?>
 
-                                   <div class="movies-infors-card">
-                                        <div class="movies-infor">
-                                             <ion-icon name="bookmark-outline"></ion-icon>
-                                             <span>9.0</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="time-outline"></ion-icon>
-                                             <span>120 mins</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="cube-outline"></ion-icon>
-                                             <span>FHD</span>
-                                        </div>
-                                        
-                                   </div>
-                              </div>
-
-                              <div class="movie-item-overlay"></div>
-
-                              <div class="movie-item-act">
-                                   <!-- <div class="ring"></div> -->
-                                   <i class='bx bxs-right-arrow'></i>
-                                   
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                              </div>
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5 m-5 s-11  to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-2.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             The tomorrow war
-                                        </div>
-
-                                   <div class="movies-infors-card">
-                                        <div class="movies-infor">
-                                             <ion-icon name="bookmark-outline"></ion-icon>
-                                             <span>9.0</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="time-outline"></ion-icon>
-                                             <span>120 mins</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="cube-outline"></ion-icon>
-                                             <span>FHD</span>
-                                        </div>
-                                        
-                                   </div>
-                              </div>
-
-                              <div class="movie-item-overlay"></div>
-
-                              <div class="movie-item-act">
-                                   <!-- <div class="ring"></div> -->
-                                   <i class='bx bxs-right-arrow'></i>
-                                   
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                              </div>
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5 m-5 s-11  to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-3.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             jungle cruise
-                                        </div>
-
-                                   <div class="movies-infors-card">
-                                        <div class="movies-infor">
-                                             <ion-icon name="bookmark-outline"></ion-icon>
-                                             <span>9.0</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="time-outline"></ion-icon>
-                                             <span>120 mins</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="cube-outline"></ion-icon>
-                                             <span>FHD</span>
-                                        </div>
-                                        
-                                   </div>
-                              </div>
-
-                              <div class="movie-item-overlay"></div>
-
-                              <div class="movie-item-act">
-                                   <!-- <div class="ring"></div> -->
-                                   <i class='bx bxs-right-arrow'></i>
-                                   
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                              </div>
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5 m-5 s-11  to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-4.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             dune
-                                        </div>
-
-                                   <div class="movies-infors-card">
-                                        <div class="movies-infor">
-                                             <ion-icon name="bookmark-outline"></ion-icon>
-                                             <span>9.0</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="time-outline"></ion-icon>
-                                             <span>120 mins</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="cube-outline"></ion-icon>
-                                             <span>FHD</span>
-                                        </div>
-                                        
-                                   </div>
-                              </div>
-
-                              <div class="movie-item-overlay"></div>
-
-                              <div class="movie-item-act">
-                                   <!-- <div class="ring"></div> -->
-                                   <i class='bx bxs-right-arrow'></i>
-                                   
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                              </div>
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5 m-5 s-11  to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-5.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             The suicide squad
-                                        </div>
-
-                                   <div class="movies-infors-card">
-                                        <div class="movies-infor">
-                                             <ion-icon name="bookmark-outline"></ion-icon>
-                                             <span>9.0</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="time-outline"></ion-icon>
-                                             <span>120 mins</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="cube-outline"></ion-icon>
-                                             <span>FHD</span>
-                                        </div>
-                                        
-                                   </div>
-                              </div>
-
-                              <div class="movie-item-overlay"></div>
-
-                              <div class="movie-item-act">
-                                   <!-- <div class="ring"></div> -->
-                                   <i class='bx bxs-right-arrow'></i>
-                                   
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                              </div>
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5 m-5 s-11  to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-6.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             no time to die
-                                        </div>
-
-                                   <div class="movies-infors-card">
-                                        <div class="movies-infor">
-                                             <ion-icon name="bookmark-outline"></ion-icon>
-                                             <span>9.0</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="time-outline"></ion-icon>
-                                             <span>120 mins</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="cube-outline"></ion-icon>
-                                             <span>FHD</span>
-                                        </div>
-                                        
-                                   </div>
-                              </div>
-
-                              <div class="movie-item-overlay"></div>
-
-                              <div class="movie-item-act">
-                                   <!-- <div class="ring"></div> -->
-                                   <i class='bx bxs-right-arrow'></i>
-                                   
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                              </div>
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5 m-5 s-11 to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-10.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             prisoner of the ghostland
-                                        </div>
-
-                                   <div class="movies-infors-card">
-                                        <div class="movies-infor">
-                                             <ion-icon name="bookmark-outline"></ion-icon>
-                                             <span>9.0</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="time-outline"></ion-icon>
-                                             <span>120 mins</span>
-                                        </div>
-                                        <div class="movies-infor">
-                                             <ion-icon name="cube-outline"></ion-icon>
-                                             <span>FHD</span>
-                                        </div>
-                                        
-                                   </div>
-                              </div>
-
-                              <div class="movie-item-overlay"></div>
-
-                              <div class="movie-item-act">
-                                   <!-- <div class="ring"></div> -->
-                                   <i class='bx bxs-right-arrow'></i>
-                                   
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                              </div>
-                         </a> 
-                        
                          <div class="btn-load btn-load-tb">
-                              <span>load more</span>
+                         <div class="demo">
+                         <?php
+                         $currentPage = $data['pagination']['currentPage'];
+                         $totalPage = $data['pagination']['totalPages'];
+                         $maxPagesToShow = 5;
+                         $startPage = max(1, $currentPage - 2);
+                         $endPage = min($totalPage, $startPage + $maxPagesToShow - 1);
+
+                         if ($endPage - $startPage < $maxPagesToShow - 1) {
+                         $startPage = max(1, $endPage - $maxPagesToShow + 1);
+                         }
+                         ?>
+                         <nav class="pagination-outer" aria-label="Page navigation">
+                         <ul class="pagination">
+                              <li class="page-item<?php if ($currentPage == 1) echo ' disabled'; ?>">
+                                   <a href="" class="page-link" data-page="<?php echo max(1, $currentPage - 1); ?>" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                   </a>
+                              </li>
+                              <?php
+                              if ($startPage > 1) {
+                                   echo "<li class='page-item'><a class='page-link' href='' data-page='1'>1</a></li>";
+                                   if ($startPage > 2) {
+                                        echo "<li class='page-item disabled'><a class='page-link' href=''>...</a></li>";
+                                   }
+                              }
+                              
+                              for ($i = $startPage; $i <= $endPage; $i++) {
+                                   echo "<li class='page-item";
+                                   if ($i == $currentPage) echo " active";
+                                   echo "'><a class='page-link' href='' data-page='$i'>$i</a></li>";
+                              }
+
+                              if ($endPage < $totalPage) {
+                                   if ($endPage < $totalPage - 1) {
+                                        echo "<li class='page-item disabled'><a class='page-link' href=''>...</a></li>";
+                                   }
+                                   echo "<li class='page-item'><a class='page-link' href='' data-page='$totalPage'>$totalPage</a></li>";
+                              }
+                              ?>
+                              <li class="page-item<?php if ($currentPage == $totalPage) echo ' disabled'; ?>">
+                                   <a href="" class="page-link" data-page="<?php echo min($totalPage, $currentPage + 1); ?>" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                   </a>
+                              </li>
+                         </ul>
+                         </nav>
+
+
+                         </div>
                          </div>
                          
                     </div>
@@ -785,397 +490,83 @@
               </div>
           </div>
 
-     <!-- END LATEST SECTION -->
-
-     <!-- TV SERIES -->
-           <div class="section-tv" id="section-tv">  
-               <div class="section-wrapper">
-                    <div class="section-header">
-                         <span> tv Series</span>
-                         <!-- <div class="btn-load-2">
-                              <span>load more</span>
-                         </div> -->
-                    </div>
-
-                    <div class="movies-slide row" id="tv-slider">
-                         <a href="#" class="movie-item col-3-5  m-5 s-11 to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-9.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             wanda Vision
-
-                                        </div>
-
-                                        <div class="movies-infors-card">
-                                             <div class="movies-infor">
-                                                  <ion-icon name="bookmark-outline"></ion-icon>
-                                                  <span>9.0</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="time-outline"></ion-icon>
-                                                  <span>120 mins</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="cube-outline"></ion-icon>
-                                                  <span>FHD</span>
-                                             </div>
-                                        </div>    
-                                   </div>
-                              </div>
-                              <div class="movie-item-overlay">
-                              </div>
-                              <div class="movie-item-act">
-                                   <i class='bx bxs-right-arrow'></i>
-
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5  m-5 s-11 to-top show-on-scroll ">
-                              <div>
-                                   <img src="./assets/img/Images/post-8.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             rumble
-                                        </div>
-
-                                        <div class="movies-infors-card">
-                                             <div class="movies-infor">
-                                                  <ion-icon name="bookmark-outline"></ion-icon>
-                                                  <span>9.0</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="time-outline"></ion-icon>
-                                                  <span>120 mins</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="cube-outline"></ion-icon>
-                                                  <span>FHD</span>
-                                             </div>
-                                        </div>    
-                                   </div>
-                              </div>
-                              <div class="movie-item-overlay">
-                              </div>
-                              <div class="movie-item-act">
-                                   <i class='bx bxs-right-arrow'></i>
-
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5  m-5 s-11 to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-1.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                         venon
-                                        </div>
-
-                                        <div class="movies-infors-card">
-                                             <div class="movies-infor">
-                                                  <ion-icon name="bookmark-outline"></ion-icon>
-                                                  <span>9.0</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="time-outline"></ion-icon>
-                                                  <span>120 mins</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="cube-outline"></ion-icon>
-                                                  <span>FHD</span>
-                                             </div>
-                                        </div>    
-                                   </div>
-                              </div>
-                              <div class="movie-item-overlay">
-                              </div>
-                              <div class="movie-item-act">
-                                   <i class='bx bxs-right-arrow'></i>
-
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5  m-5 s-11 to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-11.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                         luca
-                                        </div>
-
-                                        <div class="movies-infors-card">
-                                             <div class="movies-infor">
-                                                  <ion-icon name="bookmark-outline"></ion-icon>
-                                                  <span>9.0</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="time-outline"></ion-icon>
-                                                  <span>120 mins</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="cube-outline"></ion-icon>
-                                                  <span>FHD</span>
-                                             </div>
-                                        </div>    
-                                   </div>
-                              </div>
-                              <div class="movie-item-overlay">
-                              </div>
-                              <div class="movie-item-act">
-                                   <i class='bx bxs-right-arrow'></i>
-
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5  m-5 s-11 to-top show-on-scroll">
-                              <div>
-                                   <img src="./assets/img/Images/post-12.jpg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                         annette
-                                        </div>
-
-                                        <div class="movies-infors-card">
-                                             <div class="movies-infor">
-                                                  <ion-icon name="bookmark-outline"></ion-icon>
-                                                  <span>9.0</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="time-outline"></ion-icon>
-                                                  <span>120 mins</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="cube-outline"></ion-icon>
-                                                  <span>FHD</span>
-                                             </div>
-                                        </div>    
-                                   </div>
-                              </div>
-                              <div class="movie-item-overlay">
-                              </div>
-                              <div class="movie-item-act">
-                                   <i class='bx bxs-right-arrow'></i>
-
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                         </a>
-
-                         <a href="#" class="movie-item col-3-5  m-5 s-11 to-top show-on-scroll ">
-                              <div>
-                                   <img src="./assets/img/Images/start-trek.jpeg" alt="">
-                                   <div class="movie-item-content">
-                                        <div class="movie-item-title">
-                                             star trek Discovery
-                                        </div>
-
-                                        <div class="movies-infors-card">
-                                             <div class="movies-infor">
-                                                  <ion-icon name="bookmark-outline"></ion-icon>
-                                                  <span>9.0</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="time-outline"></ion-icon>
-                                                  <span>120 mins</span>
-                                             </div>
-                                             <div class="movies-infor">
-                                                  <ion-icon name="cube-outline"></ion-icon>
-                                                  <span>FHD</span>
-                                             </div>
-                                        </div>    
-                                   </div>
-                              </div>
-
-                              <div class="movie-item-overlay">
-                              </div>
-                              
-                              <div class="movie-item-act">
-                                   <i class='bx bxs-right-arrow'></i>
-                                   
-                                   <div>
-                                        <i class='bx bxs-share-alt' ></i>
-                                        <i class='bx bxs-heart'></i>
-                                        <i class='bx bx-plus-medical' ></i>
-                                   </div>
-                              </div>
-                              
-                         </a>
                          
+     <?php
+    include 'components/footer.php';
+    ?>
 
-                         <div class="btn-load ">
-                              <span>load more</span>
-                         </div>
-                         
-                    </div>
-               </div>
-          </div> 
+<style>
+     .pagination-outer{ text-align: center; }
+     .pagination{
+          margin-top: 50px;
+     font-family: 'Poppins', sans-serif;
+     display: inline-flex;
+     position: relative;
+     }
+     .pagination li a.page-link{
+     color: #fff;
+     background-color: #ff3838;
+     font-size: 18px;
+     font-weight: 600;
+     line-height: 35px;
+     height: 35px;
+     width: 42px;
+     padding: 0;
+     margin: 0 5px;
+     border: none;
+     border-radius: 20px 0;
+     position: relative;
+     z-index: 1;
+     transition: all 0.4s ease 0s;
+     }
+     .pagination li:first-child a.page-link,
+     .pagination li:last-child a.page-link{
+     font-size: 30px;
+     line-height: 35px;
+     font-weight: 400;
+     border: none;
+     }
+     .pagination li a.page-link:hover,
+     .pagination li a.page-link:focus,
+     .pagination li.active a.page-link:hover,
+     .pagination li.active a.page-link{
+     color: #fff;
+     background-color: #990e0e;
+     box-shadow: 3px 3px rgba(0,0,0,0.2);
+     transform: scale(1.15);
+     }
+     @media only screen and (max-width: 480px){
+     .pagination{
+          font-size: 0;
+          display: inline-block;
+     }
+     .pagination li{
+          display: inline-block;
+          vertical-align: top;
+          margin: 10px 0;
+     }
+     }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Lấy tất cả các liên kết phân trang
+    var paginationLinks = document.querySelectorAll('.pagination a.page-link');
 
+    // Thêm sự kiện click cho từng liên kết
+    paginationLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+            var page = this.getAttribute('data-page'); // Lấy số trang từ thuộc tính data-page
+            updatePage(page); // Gọi hàm để lấy dữ liệu trang mới
+        });
+    });
 
+    function updatePage(page) {
+        // Cập nhật URL và reload lại trang
+        var newUrl = 'index.php?page=' + page;
+        window.location.href = newUrl;
+    }
 
-     <!-- TV SERIES -->
-
-     <!-- SPECIAL MOVIES -->
-     <div class="special">
-          <div class="section-wrapper">
-               <div class="section-header">
-                    hot movie
-                </div>
-               <div class="big-slide-item special-movie active to-top show-on-scroll">
-                    <img src="./assets/img/Images/black-banner.png" alt="Poster">
-
-                    <div class="big-slide-item-content">
-                         <div class="item-content-wrapper">
-                              <div class="item-content-title ">
-                                   black Panther
-                              </div>
-
-                              <div class="movies-infors">
-                                   <div class="movies-infor">
-                                        <ion-icon name="bookmark-outline"></ion-icon>
-                                        <span>9.5</span>
-                                   </div>
-                                   <div class="movies-infor">
-                                        <ion-icon name="time-outline"></ion-icon>
-                                        <span>120 mins</span>
-                                   </div>
-                                   <div class="movies-infor">
-                                        <ion-icon name="cube-outline"></ion-icon>
-                                        <span>FHD</span>
-                                   </div>
-                              </div>
-
-                              <div class="item-content-description ">
-                                   Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                                   Quas, possimus eius. Deserunt non odit, cum vero reprehenderit
-                                   laudantium odio vitae autem quam, incidunt molestias ratione mollitia accusantium,
-                                   facere ab suscipit.
-                               </div>
-                         </div>
-                    </div>
-
-                    <div class="play-movies ">
-                         <div class="ring"></div>
-                        <a href="https://www.youtube.com/watch?v=qZuQc-GvRlk">
-                              <i class='bx bxs-right-arrow'></i>
-                        </a>
-                        <div class="btn-watch">
-                              <span>watch trailer</span>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-
-     <!--END SPECIAL MOVIES -->
-
-
-
-    
-     <footer class="footer ">
-          <div class="section-wrapper">
-               <div class="row ">
-                   <div class="col-6 footer-header">
-                         <a href="#" class="logo">
-                              <i style="margin-right: 10px;" class='bx bx-movie-play bx-tada main-color'></i>Fl<span class="main-color">i</span>x
-                         </a>
-
-                         <p class="description">
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                              Quas, possimus eius. Deserunt non odit, cum vero reprehenderit
-                              laudantium odio vitae autem quam, incidunt molestias ratione mollitia accusantium,
-                              facere ab suscipit.
-                         </p>
-                         <div class="social-list">
-                              <a href="#" class="social-item">
-                                   <i class="bx bxl-facebook"></i>
-                              </a>
-                              <a href="#" class="social-item">
-                                   <i class="bx bxl-instagram"></i>
-                              </a>
-                              <a href="#" class="social-item">
-                                   <i class="bx bxl-twitter"></i>
-                              </a>
-                         </div>
-                   </div>
-
-                   <div class="col-12 footer-item">
-                         <div class="row">
-                              <div class="col-4 align-items-center">
-                                   <div class="content">
-                                        <p class="main-color" style="font-size: 1.2rem;"><b>Flix</b></p>
-                                        <ul class="footer-menu">
-                                            <li><a href="#"> About us</a></li>
-                                            <li><a href="#"> My profile</a></li>
-                                            <li><a href="#"> Pricing plans</a></li>
-                                            <li><a href="#"> Contacts</a></li>
-                                        </ul>
-                                     </div>
-                              </div>
-
-
-                              <div class="col-4 align-items-center">
-                                   <div class="content">
-                                        <p class="main-color" style="font-size: 1.2rem;"><b>Browse</b></p>
-                                        <ul class="footer-menu">
-                                            <li><a href="#">Live TV</a></li>
-                                            <li><a href="#">Live Movies</a></li>
-                                            <li><a href="#">Live Series</a></li>
-                                            <li><a href="#">Streaming Library</a></li>
-                                        </ul>
-                                     </div>
-                              </div>
-
-                              <div class="col-4 align-items-center">
-                                   <div class="content">
-                                        <p class="main-color" style="font-size: 1.2rem;"><b>Help</b></p>
-                                        <ul class="footer-menu">
-                                            <li><a href="#">Account & Billing</a></li>
-                                            <li><a href="#">Plans & Pricing</a></li>
-                                            <li><a href="#">Supported devices</a></li>
-                                            <li><a href="#">Accessibility</a></li>
-                                        </ul>
-                                     </div>
-                              </div>
-
-                            
-                         </div>
-                   </div>
-               </div>
-
-
-          
-          </div>
-      </footer>
-
-
-     <script src="main.js"></script>
-</body>
-</html>
+});
+</script>
